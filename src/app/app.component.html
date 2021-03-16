@@ -2,4 +2,17 @@
   <h2>
     {{title}}
   </h2>
+  <img [src]="getImg()">
+  <div>
+    <button class="buttom-primary" (click)="guess('rane')">
+      Rane
+    </button>
+    <button class="buttom-primary" (click)="guess('eske')">
+      Eske
+    </button>
+  </div>
+  <div *ngIf="guessed">
+    <p *ngIf="correct">Du gættede rigtigt. Gratzi!</p>
+    <p *ngIf="!correct">Du gættede forkert. Tag dig sammen!</p>
+  </div>
 </div>
