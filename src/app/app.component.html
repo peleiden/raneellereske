@@ -2,8 +2,7 @@
   <h2>
     {{title}}
   </h2>
-  <img [src]="getImg()">
-  <div>
+  <div *ngIf="i!==length">
     <button class="buttom-primary" (click)="guess('rane')">
       Rane
     </button>
@@ -11,8 +10,17 @@
       Eske
     </button>
   </div>
-  <div *ngIf="guessed">
-    <p *ngIf="correct">Du gættede rigtigt. Gratzi!</p>
-    <p *ngIf="!correct">Du gættede forkert. Tag dig sammen!</p>
+  <div *ngIf="i===length">
+      Du fik {{correctShare*100 | number:'0.2-2'}} % rigtige
   </div>
+  <div *ngIf="guessed">
+    <p *ngIf="correct">
+    💎💎💎 Korrekt 💎💎💎
+    </p>
+    <p *ngIf="!correct">
+    💩💩💩 Forkert 💩💩💩
+    </p>
+  </div>
+  <p></p>
+  <img *ngIf="i!==length" [src]="getImg()">
 </div>

@@ -21,13 +21,19 @@ export class AppComponent {
   title: string;
   guessed = false;
   correct = false;
+  nCorrect = 0;
+
+  get length() { return raneellereske.rane.length; }
+  get correctShare() { return this.nCorrect / this.length; }
 
   constructor() {
-    this.title = Math.random() >= 0.5
-    ? `${this.rane} eller ${this.eske}`
-    : `${this.eske} eller ${this.rane}`;
-    this.order = [...Array(2 * raneellereske.eske.length).keys()];
-    this.order.sort((a, b) => Math.random() - 0.5);
+    this.title = (Math.random() >= 0.5
+      ? `${this.rane} eller ${this.eske}`
+      : `${this.eske} eller ${this.rane}`) + "?";
+    this.order = [...Array(2 * this.length).keys()]
+      .map(a => ({sort: Math.random(), value: a}))
+      .sort((a, b) => a.sort - b.sort)
+      .map(a => a.value);
     this.raneeske = raneellereske["rane"];
     this.raneeske.push(...raneellereske["eske"]);
   }
@@ -40,6 +46,8 @@ export class AppComponent {
   public guess(name: string) {
     this.guessed = true;
     this.correct = (this.order[this.i] >= raneellereske["eske"].length ? "eske" : "rane") === name;
-    this.i ++;
+    this.nCorrect += this.correct ? 1 : 0;
+    if (this.i < this.length)
+        this.i ++;
   }
 }
