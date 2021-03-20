@@ -2,52 +2,75 @@ import { Component } from '@angular/core';
 
 import raneellereske from "../assets/raneellereske.json";
 
+function shuffleArray(array: Array<any>) {
+  for (var i = array.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+  }
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  rane = "Rane";
-  eske = "Eske";
+  nameRane = "Rane";
+  nameEske = "Eske";
 
-  orderRane: Array<String> = Array();
-  orderEske: Array<String> = Array();
-  order: Array<number>;
-  raneeske: Array<String>;
-  truth: Array<boolean> = Array();
+  rane: Array<string>;
+  eske: Array<string>;
+  order: Array<number>;  // 0 for Rane, 1 for Eske
 
-  i: number = 0;
+  iRane = 0;
+  iEske = 0;
   title: string;
   guessed = false;
   correct = false;
   nCorrect = 0;
 
-  get length() { return raneellereske.rane.length; }
-  get correctShare() { return this.nCorrect / this.length; }
+  get i() { return this.iRane + this.iEske };
+  get length() { return this.rane.length + this.eske.length; }
 
   constructor() {
     this.title = (Math.random() >= 0.5
-      ? `${this.rane} eller ${this.eske}`
-      : `${this.eske} eller ${this.rane}`) + "?";
-    this.order = [...Array(2 * this.length).keys()]
-      .map(a => ({sort: Math.random(), value: a}))
-      .sort((a, b) => a.sort - b.sort)
-      .map(a => a.value);
-    this.raneeske = raneellereske["rane"];
-    this.raneeske.push(...raneellereske["eske"]);
+      ? `${this.nameRane} eller ${this.nameEske}`
+      : `${this.nameEske} eller ${this.nameRane}`) + "?";
+    this.rane = raneellereske["rane"];
+    shuffleArray(this.rane);
+    this.eske = raneellereske["eske"];
+    shuffleArray(this.eske);
+    this.order = Array(this.length);
+    for (let i = 0; i < this.length; i ++) {
+      this.order[i] = i < this.rane.length ? 0 : 1;
+    }
+    shuffleArray(this.order);
+    console.log("If you see this, you can give someone a shot");
   }
 
-  public getImg(): String {
-    const name = this.order[this.i] >= raneellereske["eske"].length ? "eske" : "rane";
-    return `assets/imgs/${name}/${this.raneeske[this.order[this.i]]}`;
+  public getImg(): string {
+    const name = this.order[this.i] ? this.nameEske : this.nameRane;
+    let img: string;
+    if (name == this.nameRane) {
+      img = this.rane[this.iRane];
+    } else {
+      img = this.eske[this.iEske];
+    }
+    return `assets/imgs/${name.toLowerCase()}/${img}`;
   }
 
-  public guess(name: string) {
+  public guess(guess: number) {
     this.guessed = true;
-    this.correct = (this.order[this.i] >= raneellereske["eske"].length ? "eske" : "rane") === name;
-    this.nCorrect += this.correct ? 1 : 0;
-    if (this.i < this.length)
-        this.i ++;
+    this.correct = guess == this.order[this.i];
+    if (this.correct) {
+      this.nCorrect ++;
+    }
+    if (this.order[this.i]) {
+      this.iEske ++;
+    } else {
+      this.iRane ++;
+    }
   }
 }

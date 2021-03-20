@@ -3,15 +3,15 @@
     {{title}}
   </h2>
   <div *ngIf="i!==length">
-    <button class="buttom-primary" (click)="guess('rane')">
+    <button class="buttom-primary" (click)="guess(0)">
       Rane
     </button>
-    <button class="buttom-primary" (click)="guess('eske')">
+    <button class="buttom-primary" (click)="guess(1)">
       Eske
     </button>
   </div>
   <div *ngIf="i===length">
-      Du fik {{correctShare*100 | number:'0.2-2'}} % rigtige
+      Du fik {{nCorrect*100 / length | number:'0.2-2'}} % rigtige
   </div>
   <div *ngIf="guessed">
     <p *ngIf="correct">
@@ -22,5 +22,5 @@
     </p>
   </div>
   <p></p>
-  <img *ngIf="i!==length" [src]="getImg()">
+  <img *ngIf="i!==length" [src]="getImg()" width="100%">
 </div>
