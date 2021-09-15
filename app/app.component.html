@@ -2,7 +2,7 @@
   <h2>
     {{title}}
   </h2>
-  <div *ngIf="i!==length">
+  <div *ngIf="i!==maxImgs">
     <button class="buttom-primary" (click)="guess(0)">
       Rane
     </button>
@@ -10,8 +10,8 @@
       Eske
     </button>
   </div>
-  <div *ngIf="i===length">
-      Du fik {{nCorrect*100 / length | number:'0.2-2'}} % rigtige
+  <div *ngIf="i===maxImgs">
+      Du fik {{nCorrect*100 / maxImgs | number:'0.2-2'}} % rigtige
   </div>
   <div *ngIf="guessed">
     <p *ngIf="correct">
@@ -22,5 +22,5 @@
     </p>
   </div>
   <p></p>
-  <img *ngIf="i!==length" [src]="getImg()" width="100%">
+  <img *ngIf="i!==maxImgs" [src]="getImg()" width="100%">
 </div>

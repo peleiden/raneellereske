@@ -30,6 +30,7 @@ export class AppComponent {
   guessed = false;
   correct = false;
   nCorrect = 0;
+  maxImgs = 10;
 
   get i() { return this.iRane + this.iEske };
   get length() { return this.rane.length + this.eske.length; }
